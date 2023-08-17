@@ -1,0 +1,144 @@
+{% extends 'seller-header.html' %}
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modernize Free</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images1/logos/favicon.png' %}" />
+    <link rel="stylesheet" href="{% static 'css1/styles.min.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/iconfont/tabler-icons.min.css">
+
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"> -->
+
+    <style>
+        body {
+            margin-top: 20px;
+            /* background-color: #f2f6fc;
+            color: #69707a; */
+        }
+        table{
+            margin-top: 20px;
+            background-color: #f2f6fc;
+            color: #69707a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid" style="max-width: max-content;">
+        <div class="content">
+
+            <div class="mb-9">
+                <div class="row g-3 mb-4">
+                    <div class="col-auto">
+                        <h2 class="mb-0">Orders Recieved</h2>
+                    </div>
+                </div>
+
+                <div id="products"
+                    data-list='{"valueNames":["product","price","category","tags","vendor","time"],"page":10,"pagination":true}'>
+                    <div class="mb-4">
+                        <div class="d-flex flex-wrap gap-3">
+                            <h2>Total Number Of Orders : {{order_count}}</h2>
+                            
+                    
+                </div>
+                <div>
+            
+                </div>  
+                <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white border-top border-bottom border-200 position-relative top-1">
+                    <div class="table-responsive scrollbar mx-n1 px-1">
+                        <table class="table fs--1 mb-0">
+                            <thead>
+                                <tr style="background-color: beige;">
+                                    <th class="white-space-nowrap fs--1 align-middle ps-0"
+                                        style="max-width:20px; width:18px;" scope="col"
+                                        style="width:350px;" data-sort="display-image"> 
+                                        </th>
+                                    <th class="sort white-space-nowrap align-middle fs--2" scope="col"
+                                        style="width:70px;">Product Image</th>
+                                    <th class="sort white-space-nowrap align-middle ps-4" scope="col"
+                                        style="width:350px;" data-sort="product-name">PRODUCT NAME</th>
+                                    <th class="sort align-middle text-end ps-4" scope="col" data-sort="regular-price"
+                                        style="width:250px;">PRODUCT PRICE</th>
+                                    <th class="sort align-middle text-end ps-4" scope="col" data-sort="sale-price"
+                                        style="width:150px;">QUANTITY</th>    
+                                    <th class="sort align-middle text-center ps-4" scope="col" data-sort="category"
+                                        style="width:150px;">PAYMENT OFF</th>
+                                    <th class="sort align-middle ps-3" scope="col" data-sort="tags"
+                                        style="width:100px;"></th>
+                                    <th class="sort align-middle text-center ps-4 "  scope="col" data-sort="type"
+                                        style="width:200px;">USER</th>    
+                                    <th class="sort align-middle ps-4" scope="col" data-sort="time"
+                                        style="width:250px;">ORDERED ON</th>
+                                    
+                                    <th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list" id="products-table-body">
+                                {% for i in orders_recieved %}
+                                <!-- Loop For Displaying Products -->
+                                <tr class="position-static" >
+                                    <td class="align-middle white-space-nowrap py-0">
+                                        <a class="d-block border rounded-2"
+                                            href="../../../apps/e-commerce/landing/product-details.html">
+                                            
+                                        </a>
+                                    </td>
+                                    <td class="product-name align-middle ps-4">
+                                        <a class="fw-semi-bold line-clamp-3 mb-0"
+                                            href="{% url 'seller-view-single-product' pk=i.pk %}">
+                                            <img src="{{i.product.display_image.url}}" alt width="63" />
+                                        </a>
+                                    </td>
+                                    <td class="price align-middle white-space-nowrap text-end fw-bold text-700 ps-4">
+                                        {{i.product.product_title}}
+                                    </td>
+                                    <td class="regular-price align-middle white-space-nowrap text-center fw-bold text-700 ps-4">
+                                        ₹{{i.product.sale_price}}
+                                    </td>    
+                                    <td class="sale-price align-middle white-space-nowrap text-center text-600 fs--1 ps-4 fw-semi-bold">
+                                        {{i.product_qty}}
+                                    </td>
+                                    <td class="category align-middle text-center pb-2 ps-3" style="min-width:225px;">
+                                        ₹{{i.total_price}}
+                                    </td>
+                                    <td class="tags align-middle white-space-nowrap fs-0 text-start pb-2 ps-3">
+                                        <p></p>
+                                        
+                                    </td>
+                                    <td class="type align-middle white-space-nowrap text-start fw-semi-bold pb-2 ps-4">
+                                        <p>{{i.user.email}}</p>
+                                    </td>
+                                    <td class="time align-middle white-space-nowrap text-600 pb-2 ps-4" style="color: blueviolet;">
+                                        {{i.date_time}}
+                                    </td>
+                                    
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,422 @@
+{% extends 'seller-header.html' %}
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modernize Free</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'images1/logos/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static 'css1/styles.min.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/iconfont/tabler-icons.min.css">
+</head>
+
+<body>
+  
+      <div class="container-fluid">
+        {% if succ_msg %}
+          <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+              <use xlink:href="#check-circle-fill" />
+            </svg>
+            <div>
+              <h5>{{succ_msg}}</h5>
+            </div>
+          </div>
+        {% elif err_msg %}
+          <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+              <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>
+              <h5>{{err_msg}}</h5>
+            </div>
+          </div>
+          {% elif info_msg %}
+            <div class="alert alert-primary d-flex align-items-center" role="alert">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                <div>
+                  <h5>{{info_msg}}</h5>
+              </div>
+            </div>    
+          {% endif %}
+        <form class="mb-9" action="{% url 'edit-product-details' pk=product.pk %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row g-3 flex-between-end mb-5">
+                <div class="col-auto">
+                    <h2 class="mb-2">Edit Product Details</h2>
+                </div>
+                <div class="col-auto" style="padding-left: 700px;">
+                    <button class="btn btn-primary mb-2 mb-sm-0" type="submit">Publish product</button>
+                </div>
+            </div>
+            <div class="row g-5">
+                <div class="col-12 col-xl-8">
+                    <h4 class="mb-3">Product Title</h4>
+                    <input class="form-control mb-5" type="text" name="product_title" value="{{product.product_title}}" placeholder="Write title here..."/>
+                    <div class="mb-6">
+                        <h4 class="mb-3">Product Description</h4>
+                        <textarea class="tinymce" name="product_description" cols="80" rows="5">{{product.product_description}}</textarea>
+                    </div>
+                    <h4 class="mb-3">Display images</h4>
+                    <div>
+                        <div class="mb-3">
+                            <label for="display_image">Primary Image : </label>
+                            <img src="{{product.display_image.url}}" alt="" width="150px" height="150px">
+                            <input name="display_image" type="file" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="display_image 1">Image 1 : </label>
+                            <img src="{{product.display_image1.url}}" alt="" width="150px" height="150px">
+                            <input name="display_image1" type="file" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="display_image 2">Image 2 : </label>
+                            <img src="{{product.display_image2.url}}" alt="" width="150px" height="150px">
+
+                            <input name="display_image2" type="file" />
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="tab-content py-3 ps-sm-4 h-100">
+                                <div class="tab-pane fade show active" id="pricingTabContent" role="tabpanel">
+                                    <h4 class="mb-3 d-sm-none">Pricing</h4>
+                                    <div class="row g-3">
+                                        <div class="col-12 col-lg-6">
+                                            <h5 class="mb-2 text-1000">Regular price</h5>
+                                            <input class="form-control" name="regular_price" type="text" value="{{product.regular_price}}" placeholder="$$$"/>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <h5 class="mb-2 text-1000">Sale price</h5>
+                                            <input class="form-control" name="sale_price" type="text" value="{{product.sale_price}}" placeholder="$$$"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-4">
+                    <div class="row g-2">
+                        <div class="col-12 col-xl-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">Organize</h4>
+                                    <div class="row gx-3">
+                                      <!-- ************************* -->
+                                      <div class="col-12 col-sm-6 col-xl-12">
+                                        <div class="mb-4">
+                                          <h5 class="mb-2 text-1000">Product Id</h5>
+                                          <input class="form-control mb-xl-3" type="text" value="{{product.product_id}}" placeholder="Product Id" name="product_id">                                       </div>
+                                    </div>
+                                    <!-- ******************************* -->
+                                        <div class="col-12 col-sm-6 col-xl-12">
+                                            <div class="mb-4">
+                                                <div class="d-flex flex-wrap mb-2">
+                                                    <h5 class="mb-0 text-1000 me-2">Category</h5>
+                                                </div>
+                                                {% if product.category == 'Clothing' %}
+                                                <select class="form-select mb-3" aria-label="category" name="category" >
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Clothing" selected>Clothing</option>
+                                                    <option value="Shoes">Shoes</option>
+                                                    <option value="Accessories">Accessories</option>
+                                                </select>
+                                                {% elif product.category == 'Shoes' %}
+                                                <select class="form-select mb-3" aria-label="category" name="category" >
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Clothing">Clothing</option>
+                                                    <option value="Shoes" selected>Shoes</option>
+                                                    <option value="Accessories">Accessories</option>
+                                                </select>
+                                                {% elif product.category == 'Accessories' %}
+                                                <select class="form-select mb-3" aria-label="category" name="category" >
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Clothing">Clothing</option>
+                                                    <option value="Shoes">Shoes</option>
+                                                    <option value="Accessories" selected>Accessories</option>
+                                                </select>
+                                                {% endif %}
+                                            </div>
+                                        </div>    
+                                        <div class="col-12 col-sm-6 col-xl-12">
+                                            <div class="mb-4">
+                                                <div class="d-flex flex-wrap mb-2">
+                                                    <h5 class="mb-0 text-1000 me-2">Product Type</h5>
+                                                </div>
+                                                {% if product.product_type == 'Casual Shirt' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt" selected>Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'Casual Pant' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant" selected>Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'T-Shirt' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt" selected>T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'Analog watch' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch" selected>Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'Smart watch' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch" selected>Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'Sport Shoes' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes" selected>Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'Casual Shoes' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes" selected>Casual Shoes</option>
+                                                    <option value="Sunglasses">Sunglasses</option>
+                                                </select>
+                                                {% elif product.product_type == 'Sunglasses' %}
+                                                <select class="form-select mb-3" aria-label="category" name="product_type">
+                                                    <option value="select">__Select__</option>
+                                                    <option value="Casual Shirt">Casual Shirt</option>
+                                                    <option value="Casual Pant">Casual Pant</option>
+                                                    <option value="T-Shirt">T-Shirt</option>
+                                                    <option value="Analog watch">Analog watch</option>
+                                                    <option value="Smart watch">Smart watch</option>
+                                                    <option value="Sport Shoes">Sport Shoes</option>
+                                                    <option value="Casual Shoes">Casual Shoes</option>
+                                                    <option value="Sunglasses" selected>Sunglasses</option>
+                                                </select>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-xl-12">
+                                            <div class="d-flex flex-wrap mb-2">
+                                                <h5 class="mb-0 text-1000 me-2">Collection</h5>
+                                            </div>
+                                            {% if product.collection == 'Regular' %}
+                                            <select class="form-select" aria-label="category" name="collection">
+                                                <option value="select">__Select__</option>
+                                                <option value="Regular" selected>Regular</option>
+                                                <option value="Sale">Sale</option>
+                                                <option value="Summer">Summer</option>
+                                                <option value="Winter">Winter</option>
+                                                <option value="Traditional">Traditional</option>
+                                                <option value="Party">Party</option>
+                                            </select>
+                                            {% elif product.collection == 'Sale' %}
+                                            <select class="form-select" aria-label="category" name="collection">
+                                                <option value="select">__Select__</option>
+                                                <option value="Regular">Regular</option>
+                                                <option value="Sale" selected>Sale</option>
+                                                <option value="Summer">Summer</option>
+                                                <option value="Winter">Winter</option>
+                                                <option value="Traditional">Traditional</option>
+                                                <option value="Party">Party</option>
+                                            </select>
+                                            {% elif product.collection == 'Summer' %}
+                                            <select class="form-select" aria-label="category" name="collection">
+                                                <option value="select">__Select__</option>
+                                                <option value="Regular">Regular</option>
+                                                <option value="Sale">Sale</option>
+                                                <option value="Summer" selected>Summer</option>
+                                                <option value="Winter">Winter</option>
+                                                <option value="Traditional">Traditional</option>
+                                                <option value="Party">Party</option>
+                                            </select>
+                                            {% elif product.collection == 'Winter' %}
+                                            <select class="form-select" aria-label="category" name="collection">
+                                                <option value="select">__Select__</option>
+                                                <option value="Regular">Regular</option>
+                                                <option value="Sale">Sale</option>
+                                                <option value="Summer">Summer</option>
+                                                <option value="Winter" selected>Winter</option>
+                                                <option value="Traditional">Traditional</option>
+                                                <option value="Party">Party</option>
+                                            </select>
+                                            {% elif product.collection == 'Traditional' %}
+                                            <select class="form-select" aria-label="category" name="collection">
+                                                <option value="select">__Select__</option>
+                                                <option value="Regular">Regular</option>
+                                                <option value="Sale">Sale</option>
+                                                <option value="Summer">Summer</option>
+                                                <option value="Winter">Winter</option>
+                                                <option value="Traditional" selected>Traditional</option>
+                                                <option value="Party">Party</option>
+                                            </select>
+                                            {% elif product.collection == 'Party' %}
+                                            <select class="form-select" aria-label="category" name="collection">
+                                                <option value="select">__Select__</option>
+                                                <option value="Regular">Regular</option>
+                                                <option value="Sale">Sale</option>
+                                                <option value="Summer">Summer</option>
+                                                <option value="Winter">Winter</option>
+                                                <option value="Traditional">Traditional</option>
+                                                <option value="Party" selected>Party</option>
+                                            </select>
+                                            {% endif %}
+                                            
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-xl-12">
+                                            <div class="d-flex flex-wrap mb-2">
+                                                <h5 class="mb-0 text-1000 me-2">Tags</h5>
+                                                <a class="fw-bold fs--1 lh-sm" href="#!">View all tags</a>
+                                            </div>
+                                            {% if product.tags == 'LIFESTYLE' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE" selected>LIFESTYLE</option>
+                                                <option value="Skin">Skin</option>
+                                                <option value="Body">Body</option>
+                                                <option value="EXERCISE">EXERCISE</option>
+                                                <option value="DISCIPLINE">DISCIPLINE</option>
+                                                <option value="HEALTH">HEALTH</option>
+                                                <option value="FITNESS">FITNESS</option>
+                                            </select>
+                                            {% elif product.tags == 'Skin' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE">LIFESTYLE</option>
+                                                <option value="Skin" selected>Skin</option>
+                                                <option value="Body">Body</option>
+                                                <option value="EXERCISE">EXERCISE</option>
+                                                <option value="DISCIPLINE">DISCIPLINE</option>
+                                                <option value="HEALTH">HEALTH</option>
+                                                <option value="FITNESS">FITNESS</option>
+                                            </select>
+                                            {% elif product.tags == 'Body' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE">LIFESTYLE</option>
+                                                <option value="Skin">Skin</option>
+                                                <option value="Body" selected>Body</option>
+                                                <option value="EXERCISE">EXERCISE</option>
+                                                <option value="DISCIPLINE">DISCIPLINE</option>
+                                                <option value="HEALTH">HEALTH</option>
+                                                <option value="FITNESS">FITNESS</option>
+                                            </select>
+                                            {% elif product.tags == 'EXERCISE' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE">LIFESTYLE</option>
+                                                <option value="Skin">Skin</option>
+                                                <option value="Body">Body</option>
+                                                <option value="EXERCISE" selected>EXERCISE</option>
+                                                <option value="DISCIPLINE">DISCIPLINE</option>
+                                                <option value="HEALTH">HEALTH</option>
+                                                <option value="FITNESS">FITNESS</option>
+                                            </select>
+                                            {% elif product.tags == 'DISCIPLINE' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE">LIFESTYLE</option>
+                                                <option value="Skin">Skin</option>
+                                                <option value="Body">Body</option>
+                                                <option value="EXERCISE">EXERCISE</option>
+                                                <option value="DISCIPLINE" selected>DISCIPLINE</option>
+                                                <option value="HEALTH">HEALTH</option>
+                                                <option value="FITNESS">FITNESS</option>
+                                            </select>
+                                            {% elif product.tags == 'HEALTH' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE">LIFESTYLE</option>
+                                                <option value="Skin">Skin</option>
+                                                <option value="Body">Body</option>
+                                                <option value="EXERCISE">EXERCISE</option>
+                                                <option value="DISCIPLINE">DISCIPLINE</option>
+                                                <option value="HEALTH" selected>HEALTH</option>
+                                                <option value="FITNESS">FITNESS</option>
+                                            </select>
+                                            {% elif product.tags == 'FITNESS' %}
+                                            <select class="form-select" aria-label="category" name="tags">
+                                                <option value="select">__Select__</option>
+                                                <option value="LIFESTYLE">LIFESTYLE</option>
+                                                <option value="Skin">Skin</option>
+                                                <option value="Body">Body</option>
+                                                <option value="EXERCISE">EXERCISE</option>
+                                                <option value="DISCIPLINE">DISCIPLINE</option>
+                                                <option value="HEALTH">HEALTH</option>
+                                                <option value="FITNESS" selected>FITNESS</option>
+                                            </select>
+
+                                            {% endif %}
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+</div>
+
+</body>
+
+</html>
+{% endblock %}

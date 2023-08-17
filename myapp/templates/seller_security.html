@@ -1,0 +1,182 @@
+{% extends 'seller-header.html' %}
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modernize Free</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'images1/logos/favicon.png' %}" />
+    <link rel="stylesheet" href="{% static 'css1/styles.min.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/iconfont/tabler-icons.min.css">
+
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"> -->
+
+    <style>
+        body {
+            margin-top: 20px;
+            background-color: #f2f6fc;
+            color: #69707a;
+        }
+
+        .img-account-profile {
+            height: 10rem;
+        }
+
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+
+        .card {
+            box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+        }
+
+        .card .card-header {
+            font-weight: 500;
+        }
+
+        .card-header:first-child {
+            border-radius: 0.35rem 0.35rem 0 0;
+        }
+
+        .card-header {
+            padding: 1rem 1.35rem;
+            margin-bottom: 0;
+            background-color: rgba(33, 40, 50, 0.03);
+            border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+        }
+
+        .form-control,
+        .dataTable-input {
+            display: block;
+            width: 100%;
+            padding: 0.875rem 1.125rem;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1;
+            color: #69707a;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #c5ccd6;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0.35rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .nav-borders .nav-link.active {
+            color: #0061f2;
+            border-bottom-color: #0061f2;
+        }
+
+        .nav-borders .nav-link {
+            color: #69707a;
+            border-bottom-width: 0.125rem;
+            border-bottom-style: solid;
+            border-bottom-color: transparent;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container-xl px-4 mt-4">
+        <!-- Account page navigation-->
+        <nav class="nav nav-borders">
+        <a class="nav-link  ms-0" href="{% url 'seller-profile' %}" target="__blank">Profile</a>
+        <a class="nav-link active" href="{% url 'seller-security' %}" target="__blank">Security</a>
+        </nav>
+        <hr class="mt-0 mb-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Change password card-->
+                <div class="card mb-4">
+                    <div class="card-header">Change Password</div>
+                    <div class="card-body">
+                        {% if succ_msg %}
+                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"
+                                    aria-label="Success:">
+                                    <use xlink:href="#check-circle-fill" />
+                                </svg>
+                                <div>
+                                    <h5>{{succ_msg}}</h5>
+                                </div>
+                            </div>
+                        {% elif err_msg %}
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"
+                                    aria-label="Danger:">
+                                    <use xlink:href="#exclamation-triangle-fill" />
+                                </svg>
+                                <div>
+                                    <h5>{{err_msg}}</h5>
+                                </div>
+                            </div>
+                        {% elif info_msg %}
+                            <div class="alert alert-primary d-flex align-items-center" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+                                    <use xlink:href="#info-fill" />
+                                </svg>
+                                <div>
+                                    <h5>{{info_msg}}</h5>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <form action="{% url 'seller-security' %}" method="post"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- Form Group (current password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="currentPassword">Current Password</label>
+                                <input class="form-control" id="currentPassword" name="current_password" type="password" placeholder="Enter current password">
+                            </div>
+                            <!-- Form Group (new password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="newPassword">New Password</label>
+                                <input class="form-control" id="newPassword" name="new_password" type="password" placeholder="Enter new password">
+                            </div>
+                            <!-- Form Group (confirm password)-->
+                            <div class="mb-3">
+                                <label class="small mb-1" for="confirmPassword">Confirm Password</label>
+                                <input class="form-control" id="confirmPassword" name="cnew_password" type="password" placeholder="Confirm new password">
+                            </div>
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- Two factor authentication card-->
+                <div class="card mb-4">
+                    <div class="card-header">Delete Account</div>
+                    <div class="card-body">
+                        <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below.</p>
+                        <button class="btn btn-danger-soft text-danger" type="button">I understand, delete my account</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

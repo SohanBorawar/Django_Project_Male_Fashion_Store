@@ -1,0 +1,121 @@
+{% extends 'header-footer.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+</head>
+
+<body>
+    <section class="shopping-cart spad">
+        <!-- <div class="container"> -->
+            <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white pt-7 border-y border-300">
+                <div
+                    data-list="{&quot;valueNames&quot;:[&quot;product&quot;,&quot;customer&quot;,&quot;rating&quot;,&quot;review&quot;,&quot;time&quot;],&quot;page&quot;:6}">
+                    <div class="row align-items-end justify-content-between pb-5 g-3">
+                        <div class="col-auto" style="padding-left: 100px;">
+                            <h3>>> Orders <span><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery" width="48" height="48" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+                                <path d="M3 9l4 0" />
+                              </svg></span></h3>
+                        </div>
+                    </div>
+                    <div class="table-responsive mx-n1 px-1 scrollbar">
+                        <table class="table fs--1 mb-0 border-top border-200">
+                            <thead>
+                                <tr>
+                                    <th class="white-space-nowrap fs--1 ps-0 align-middle">
+                                        
+                                    </th>
+                                    <th  colspan="2" class="sort white-space-nowrap align-middle" scope="col"></th>
+                                    <th class="sort white-space-nowrap align-middle" scope="col"
+                                    style="min-width:360px;" data-sort="product">PRODUCT IMG</th>
+                                    <!-- <th class="sort white-space-nowrap align-middle" scope="col"
+                                        style="min-width:360px;" data-sort="product">PRODUCT NAME</th> -->
+                                    <th class="sort align-middle" scope="col" data-sort="customer"
+                                        style="min-width:200px;">QUANTITY</th>
+                                    
+                                    <th class="sort align-middle" scope="col" style="max-width:350px;"
+                                        data-sort="review">PRODUCT PRICE</th>
+                                    <th class="sort text-start ps-5 align-middle" scope="col" data-sort="status">TOTAL PAYMENT
+                                    </th>
+                                    <th class="sort text-end align-middle" scope="col" data-sort="time">DATE TIME</th>
+                                    <th class="sort text-end pe-0 align-middle" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="list" id="table-latest-review-body">
+                            {% for i in cart %}    
+                                <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                    <td class="fs--1 align-middle ps-0">
+                                        
+                                    </td>
+                                    <td  class="align-middle product white-space-nowrap py-0"><a
+                                            class="d-block rounded-2 border"
+                                            href="apps/e-commerce/landing/product-details.html"><img
+                                                src="{{i.product.display_image.url}}" alt="" width="103"></a></td>
+                                    <td class="align-middle product white-space-nowrap"><a class="fw-semi-bold"
+                                            href="apps/e-commerce/landing/product-details.html"></a></td>
+                                    <td class="align-middle customer white-space-nowrap"><a
+                                            class="d-flex align-items-center text-900"
+                                            href="apps/e-commerce/landing/profile.html">
+                                            
+                                            <h6 class="mb-0 ms-3 text-900">{{i.product.product_title}}</h6>
+                                        </a></td>
+                                   
+                                    <td class="align-middle review" style="min-width:350px;">
+                                        <p class="fs--1 fw-semi-bold text-1000 mb-0">{{i.product_qty}}</p>
+                                    </td>
+                                    <td class="align-middle text-start ps-5 status"><span
+                                            class="badge badge-phoenix fs--2 badge-phoenix-success"><span
+                                                class="badge-label">{{i.product_price}}</span></span></td>
+                                    <td class="align-middle text-end time white-space-nowrap">
+                                        <div class="hover-hide">
+                                            <h6 class="text-1000 mb-0">{{i.total_price}}</h6>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle white-space-nowrap text-end pe-0">
+                                        <div class="position-relative">
+                                            <div class="hover-actions">
+                                                <h6 class="text-1000 mb-0">{{i.date_time}}</h6>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
+
+{% endblock %}

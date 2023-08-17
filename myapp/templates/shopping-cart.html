@@ -1,0 +1,196 @@
+{% extends 'header-footer.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Shopping Cart</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'index' %}">Home</a>
+                            <a href="{% url 'shop' %}">Shop</a>
+                            <span>Shopping Cart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
+
+    <section class="shopping-cart spad">
+        <div class="container">
+            {% if succ_msg %}
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+                <use xlink:href="#check-circle-fill" />
+            </svg>
+            <div>
+                <h5>{{succ_msg}}</h5>
+            </div>
+        </div>
+        {% elif err_msg %}
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>
+                <h5>{{err_msg}}</h5>
+            </div>
+        </div>
+        {% elif info_msg %}
+        <div class="alert alert-primary d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+                <use xlink:href="#info-fill" />
+            </svg>
+            <div>
+                <h5>{{info_msg}}</h5>
+            </div>
+        </div>
+        {% endif %}
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in cart %}
+                                    <tr>
+                                        <td class="product__cart__item">
+                                            <div class="product__cart__item__pic">
+                                                <a href="{% url 'view-details' pk=i.product.pk %}"><img
+                                                        src="{{i.product.display_image.url}}" alt="" width="100px"
+                                                        height="120px"></a>
+                                            </div>
+                                            <div class="product__cart__item__text">
+                                                <a href="{% url 'view-details' pk=i.product.pk %}">
+                                                    <h6>{{i.product.product_title}}</h6>
+                                                </a>
+                                                <h5>₹{{i.product.sale_price}}</h5>
+                                            </div>
+                                        </td>
+                                        <form action="{% url 'update-cart' %}" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <td class="quantity__item">
+                                                <input type="hidden" name="product_pk" value="{{i.pk}}">
+                                                <div class="quantity">
+                                                    <div class="pro-qty-2">
+                                                        <input type="number" value="{{i.product_qty}}" name="update_qty" onchange="this.form.submit();">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart__price">₹{{i.total_price}}</td>
+                                            <td class="cart__close"><a
+                                                    href="{% url 'remove-from-cart' pk=i.product.pk %}"><i
+                                                        class="fa fa-close"></i></a></td>
+                                        </form>                
+                                    </tr>
+                                {% endfor %}    
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="{% url 'shop' %}">Continue Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>₹{{net_price}}</span></li>
+                            <li>Total <span>₹{{net_price}}</span></li>
+                        </ul>
+                        <form method="post">
+                            <input type="hidden"  id="net_price" name="amount" value="{{net_price}}">
+                            <button type="button" class="btn btn-lg btn-primary" id="checkout-button">Proceed to checkout</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Section End -->
+    <script type="text/javascript">
+        var stripe = Stripe('pk_test_51NdrqISH1qc2kN8kpfj65tgfzyb1BV3XCqOJ0hqlnXkuUwKU73DC3tBvbN0nT7jQAFMfyt2jmo58IdglgyRuGHDn00KJSisP1k');
+        var checkoutButton = document.getElementById('checkout-button');
+    
+        checkoutButton.addEventListener('click', function() { 
+            fetch('/create-checkout-session/', {
+            method: 'POST',
+            headers:{
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({'post_data':'{{net_price}}'})
+        })
+     .then(function(response) {
+     return response.json();
+     })
+     .then(function(session) {
+     return stripe.redirectToCheckout({ sessionId: session.id });
+     })
+     .then(function(result) {
+     // If `redirectToCheckout` fails due to a browser or network
+     // error, you should display the localized error message to your
+     // customer using `error.message`.
+     if (result.error) {
+     alert(result.error.message);
+     }
+     })
+     .catch(function(error) {
+     console.error('Error:', error);
+     });
+     });
+     </script>
+
+</body>
+
+</html>
+
+{% endblock %}
