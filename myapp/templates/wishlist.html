@@ -54,15 +54,7 @@
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg" data-setbg="{{i.product.display_image.url}}" style="height: 500px;"></div>
                         <div class="blog__item__text">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-plus" width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                <path d="M17 17h-11v-14h-2" />
-                                <path d="M6 5l6 .429m7.138 6.573l-.143 1h-13" />
-                                <path d="M15 6h6m-3 -3v6" />
-                              </svg><a href="#" class="add-cart">+ Add To Cart</a>
-                                <h5>₹{{i.product.sale_price}}</h5></span>
+                                <h5>₹{{i.product.sale_price}}</h5>
                             <h5>{{i.product.product_title}}</h5>
                             <a href="{% url 'view-details' pk=i.product.pk %}">View Details</a>
                         </div>

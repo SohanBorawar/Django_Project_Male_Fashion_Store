@@ -109,9 +109,13 @@ def index(request):
         product = random.choice(l)
         index_products.append(product)
         l.remove(product)
+    shoe_products = Product.objects.filter(category = 'Shoes')
+    index_sale_products = []
+    for i in range(0,1):
+        shoe_products = random.choice(shoe_products)
+        index_sale_products.append(shoe_products)
 
-    print(index_products)    
-    return render(request,'index.html',{'index_products':index_products})
+    return render(request,'index.html',{'index_products':index_products,'index_sale_products':index_sale_products})
 
 
 def contact(request):
@@ -186,7 +190,6 @@ def signin(request):
                 else:
                     err_msg = 'Incorrect Password'
                     return render(request,'signin.html',{'err_msg':err_msg})
-
         except:        
             info_msg = 'Entered Email Is Not Registered So, Kindly Register'
             return render(request,'signup.html',{'info_msg':info_msg})
@@ -214,7 +217,8 @@ def about(request):
 # ------------------------------------------- shop page ----------------------------------#
 def shop(request):
     products = Product.objects.all()
-    return render(request,'shop.html',{'products':products})
+    length = len(products)
+    return render(request,'shop.html',{'products':products,'length':length})
 
 def category_all(request):
     products = Product.objects.all()
@@ -278,16 +282,29 @@ def edit_profile(request):
 def forget_password(request):
     if request.method=='POST':
         try:
-            user = User.objects.get(email = request.POST['email'])
-            otp = random.randint(1000,9999)
-            subject = 'Otp To Reset Password'
-            message = f'Hi {user.fname}, thank you for registering with Us {otp}.'
-            email_from = settings.EMAIL_HOST_USER
-            recipient_list = [user.email, ]
-            send_mail( subject, message, email_from, recipient_list )
+            try:
+                user = User.objects.get(email = request.POST['email'])
+                otp = random.randint(1000,9999)
+                subject = 'Otp To Reset Password'
+                message = f'Hi {user.fname}, thank you for registering with Us {otp}.'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email, ]
+                send_mail( subject, message, email_from, recipient_list )
 
-            succ_msg = 'OTP Send Successfullt'
-            return render(request,'verify-otp.html',{'succ_msg':succ_msg,'email':user.email,'otp':otp})
+                succ_msg = 'OTP Send Successfullt'
+                return render(request,'verify-otp.html',{'succ_msg':succ_msg,'email':user.email,'otp':otp})
+            except:
+                user = Seller.objects.get(email = request.POST['email'])
+                otp = random.randint(1000,9999)
+                subject = 'Otp To Reset Password'
+                message = f'Hi {user.fname}, thank you for registering with Us {otp}.'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email, ]
+                send_mail( subject, message, email_from, recipient_list )
+
+                succ_msg = 'OTP Send Successfullt'
+                return render(request,'verify-otp.html',{'succ_msg':succ_msg,'email':user.email,'otp':otp})
+
         except:
             err_msg = 'Entered Email is Not Registered'
             return render(request,'forget-password.html',{'err_msg':err_msg})
@@ -313,15 +330,26 @@ def new_password(request):
     email = request.POST['email']
     np = request.POST['newpassword']    
     cnp = request.POST['cnewpassword']
-    user = User.objects.get(email = email)
-    if np == cnp:
-        user.password = np
-        user.save()
-        succ_msg = 'Password Changed Successfully'
-        return render(request,'signin.html',{'succ_msg':succ_msg})
-    else:
-        err_msg = 'Password & Confirm Password Does Not Match'
-        return render(request,'new-password.html',{'err_msg':err_msg,'email':email})
+    try:
+        user = User.objects.get(email = email)
+        if np == cnp:
+            user.password = np
+            user.save()
+            succ_msg = 'Password Changed Successfully'
+            return render(request,'signin.html',{'succ_msg':succ_msg})
+        else:
+            err_msg = 'Password & Confirm Password Does Not Match'
+            return render(request,'new-password.html',{'err_msg':err_msg,'email':email})
+    except:
+        user = User.objects.get(email = email)
+        if np == cnp:
+            user.password = np
+            user.save()
+            succ_msg = 'Password Changed Successfully'
+            return render(request,'signin.html',{'succ_msg':succ_msg})
+        else:
+            err_msg = 'Password & Confirm Password Does Not Match'
+            return render(request,'new-password.html',{'err_msg':err_msg,'email':email})
 def change_password(request):
     if request.method=='POST':
         user = User.objects.get(email = request.session['email'])

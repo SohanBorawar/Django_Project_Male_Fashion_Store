@@ -41,12 +41,7 @@
                                 <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                 commitment to exceptional quality.</p>
                                 <a href="{% url 'shop' %}" class="primary-btn">Shop now <span class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -62,12 +57,6 @@
                                 <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                 commitment to exceptional quality.</p>
                                 <a href="{% url 'shop' %}" class="primary-btn">Shop now <span class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -137,15 +126,7 @@
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg" data-setbg="{{i.display_image.url}}" style="height: 400px;"></div>
                         <div class="blog__item__text">
-                            <span><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart-plus" width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                <path d="M17 17h-11v-14h-2" />
-                                <path d="M6 5l6 .429m7.138 6.573l-.143 1h-13" />
-                                <path d="M15 6h6m-3 -3v6" />
-                              </svg><a href="{% url 'add-to-cart' pk=i.pk %}" class="add-cart">+ Add To Cart</a>
-                                <h5>₹{{i.sale_price}}</h5></span>
+                            <h5>₹{{i.sale_price}}</h5>
                             <h5>{{i.product_title}}</h5>
                             <a href="{% url 'view-details' pk=i.pk %}">View Details</a>
                         </div>
@@ -158,6 +139,7 @@
     <!-- Product Section End -->
 
     <!-- Categories Section Begin -->
+    {% for i in index_sale_products %}
     <section class="categories spad">
         <div class="container">
             <div class="row">
@@ -168,17 +150,18 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="categories__hot__deal">
-                        <img src="{% static 'img/product-sale.png' %}" alt="">
+                        <img src="{{i.display_image.url}}" alt="">
                         <div class="hot__deal__sticker">
                             <span>Sale Of</span>
-                            <h5>$29.99</h5>
+                            <h5>₹{{i.sale_price}}</h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1">
                     <div class="categories__deal__countdown">
                         <span>Deal Of The Week</span>
-                        <h2>Multi-pocket Chest Bag Black</h2>
+                        <h2>{{i.product_title}}</h2>
+                        {% endfor %}
                         <div class="categories__deal__countdown__timer" id="countdown">
                             <div class="cd-item">
                                 <span>3</span>
@@ -197,7 +180,7 @@
                                 <p>Seconds</p>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn">Shop now</a>
+                        <a href="{% url 'shop' %}" class="primary-btn">Shop now</a>
                     </div>
                 </div>
             </div>

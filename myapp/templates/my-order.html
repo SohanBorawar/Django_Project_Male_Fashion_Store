@@ -53,7 +53,7 @@
                                     </th>
                                     <th  colspan="2" class="sort white-space-nowrap align-middle" scope="col"></th>
                                     <th class="sort white-space-nowrap align-middle" scope="col"
-                                    style="min-width:360px;" data-sort="product">PRODUCT IMG</th>
+                                    style="min-width:360px;" data-sort="product">PRODUCT DETAILS</th>
                                     <!-- <th class="sort white-space-nowrap align-middle" scope="col"
                                         style="min-width:360px;" data-sort="product">PRODUCT NAME</th> -->
                                     <th class="sort align-middle" scope="col" data-sort="customer"
@@ -75,7 +75,7 @@
                                     </td>
                                     <td  class="align-middle product white-space-nowrap py-0"><a
                                             class="d-block rounded-2 border"
-                                            href="apps/e-commerce/landing/product-details.html"><img
+                                            href="{% url 'view-details' pk=i.product.pk %}"><img
                                                 src="{{i.product.display_image.url}}" alt="" width="103"></a></td>
                                     <td class="align-middle product white-space-nowrap"><a class="fw-semi-bold"
                                             href="apps/e-commerce/landing/product-details.html"></a></td>
@@ -87,14 +87,14 @@
                                         </a></td>
                                    
                                     <td class="align-middle review" style="min-width:350px;">
-                                        <p class="fs--1 fw-semi-bold text-1000 mb-0">{{i.product_qty}}</p>
+                                        <p class="fs--1 fw-semi-bold  text-1000 mb-0">{{i.product_qty}}</p>
                                     </td>
-                                    <td class="align-middle text-start ps-5 status"><span
-                                            class="badge badge-phoenix fs--2 badge-phoenix-success"><span
-                                                class="badge-label">{{i.product_price}}</span></span></td>
+                                    <td class="align-middle text-center ps-5 status"><span
+                                            class="badge badge-phoenix  fs--2 badge-phoenix-success"><span
+                                                class="badge-label"><h6>{{i.product_price}}</h6></span></span></td>
                                     <td class="align-middle text-end time white-space-nowrap">
                                         <div class="hover-hide">
-                                            <h6 class="text-1000 mb-0">{{i.total_price}}</h6>
+                                            <h6 class="text-2000 text-center mb-0">{{i.total_price}}</h6>
                                         </div>
                                     </td>
                                     <td class="align-middle white-space-nowrap text-end pe-0">
